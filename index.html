@@ -14,7 +14,61 @@ body{
   overflow:hidden;
 }
 
-/* Slides */
+/* ================= PASSWORD SCREEN ================= */
+#lockScreen{
+  position:fixed;
+  inset:0;
+  background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
+  transition:1s;
+}
+
+#lockScreen h1{
+  color:white;
+  margin-bottom:15px;
+}
+
+#lockScreen input{
+  padding:12px 20px;
+  border-radius:30px;
+  border:none;
+  font-size:18px;
+  text-align:center;
+}
+
+#lockScreen button{
+  margin-top:15px;
+  padding:10px 30px;
+  border-radius:30px;
+  border:none;
+  background:#ff4d6d;
+  color:white;
+  font-size:18px;
+  cursor:pointer;
+}
+
+#lockScreen p{
+  color:white;
+  margin-top:10px;
+}
+
+.unlock{
+  animation:unlockAnim 1.2s forwards;
+}
+
+@keyframes unlockAnim{
+  to{
+    opacity:0;
+    transform:scale(1.2);
+    pointer-events:none;
+  }
+}
+
+/* ================= SLIDES ================= */
 .slide{
   position:absolute;
   width:100%;
@@ -127,7 +181,7 @@ button{
   to{opacity:1;transform:translateY(0);}
 }
 
-/* HER PHOTO */
+/* Photo */
 .anu-pic{
   width:170px;
   height:170px;
@@ -138,7 +192,7 @@ button{
   box-shadow:0 0 25px rgba(255,77,109,0.6);
 }
 
-/* Choose one */
+/* Cards */
 .cards{display:flex;gap:20px;}
 .card{
   width:110px;
@@ -176,12 +230,20 @@ button{
 
 <body>
 
-<!-- 🎶 Background Music (mobile-safe) -->
+<!-- 🔐 PASSWORD SCREEN -->
+<div id="lockScreen">
+  <h1>🔐 Enter Password</h1>
+  <input type="password" id="pwd" placeholder="Password">
+  <button onclick="unlock()">Unlock ❤️</button>
+  <p>Hint: Someone special 💕</p>
+</div>
+
+<!-- 🎶 MUSIC -->
 <audio id="bgMusic" loop>
   <source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<!-- Slide 1 -->
+<!-- SLIDE 1 -->
 <div class="slide active first" id="s1">
   <div class="santa">🎅</div>
   <div class="trees">🎄 🎄 🎄</div>
@@ -192,20 +254,17 @@ button{
   </div>
 </div>
 
-<!-- Slide 2 -->
+<!-- SLIDE 2 -->
 <div class="slide" id="s2">
   <h1>Tap the gift 💝</h1>
   <div class="gift" onclick="openGift()"></div>
 </div>
 
-<!-- Slide 3 -->
+<!-- SLIDE 3 -->
 <div class="slide" id="s3">
   <div class="letter">
     <h2>Dear Anu ❤️</h2>
-
-    <!-- HER PHOTO -->
-    <img src="anu.jpg" class="anu-pic" alt="Anu">
-
+    <img src="anu.jpg" class="anu-pic">
     <p>
       This Christmas, I just want you to know how much you mean to me.
       You bring warmth, happiness, and love into my life.
@@ -218,33 +277,24 @@ button{
   <button onclick="go(4)">Next</button>
 </div>
 
-<!-- Slide 4 -->
+<!-- SLIDE 4 -->
 <div class="slide" id="s4">
   <h1>🎁 Gift for me</h1>
   <button onclick="go(5)">Open</button>
 </div>
 
-<!-- Slide 5 -->
+<!-- SLIDE 5 -->
 <div class="slide" id="s5">
   <h2>Choose one 💌</h2>
   <div class="cards">
     <div class="card" onclick="flip(this)">
-      <div class="inner">
-        <div class="front">🎁</div>
-        <div class="back">💖</div>
-      </div>
+      <div class="inner"><div class="front">🎁</div><div class="back">💖</div></div>
     </div>
     <div class="card" onclick="flip(this)">
-      <div class="inner">
-        <div class="front">🎁</div>
-        <div class="back">💖</div>
-      </div>
+      <div class="inner"><div class="front">🎁</div><div class="back">💖</div></div>
     </div>
     <div class="card" onclick="flip(this)">
-      <div class="inner">
-        <div class="front">🎁</div>
-        <div class="back">💖</div>
-      </div>
+      <div class="inner"><div class="front">🎁</div><div class="back">💖</div></div>
     </div>
   </div>
   <button onclick="go(6)">Continue</button>
@@ -255,6 +305,17 @@ button{
 <div class="slide" id="s8"><h1>The Gift For Me ❤️</h1></div>
 
 <script>
+function unlock(){
+  if(document.getElementById("pwd").value==="anu@18"){
+    document.getElementById("lockScreen").classList.add("unlock");
+    const m=document.getElementById("bgMusic");
+    m.volume=0.25;
+    m.play();
+  }else{
+    alert("Wrong password 💔");
+  }
+}
+
 function go(n){
   document.querySelector('.active').classList.remove('active');
   document.getElementById('s'+n).classList.add('active');
@@ -267,19 +328,8 @@ function openGift(){
 
 function flip(el){el.classList.toggle('flip');}
 
-/* Start music on first tap (required for phones) */
-let started=false;
-document.body.addEventListener("click",()=>{
-  if(!started){
-    const m=document.getElementById("bgMusic");
-    m.volume=0.25;
-    m.play();
-    started=true;
-  }
-});
-
 /* Snow */
-for(let i=0;i<45;i++){
+for(let i=0;i<40;i++){
   let s=document.createElement("div");
   s.className="snow";
   s.innerHTML="❄️";
