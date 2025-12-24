@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Christmas Gift 🎄</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+
+body{
+  background:#f5f7fa;
+  height:100vh;
+  overflow:hidden;
+}
+
+/* Slides */
+.slide{
+  position:absolute;
+  width:100%;
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  opacity:0;
+  pointer-events:none;
+  transition:1s;
+}
+.slide.active{opacity:1;pointer-events:auto;}
+
+/* Buttons */
+button{
+  margin-top:25px;
+  padding:12px 30px;
+  font-size:18px;
+  border:none;
+  border-radius:30px;
+  background:#ff4d6d;
+  color:white;
+  cursor:pointer;
+}
+
+/* Snow */
+.snow{
+  position:fixed;
+  top:-10px;
+  color:white;
+  animation:snow linear infinite;
+  opacity:0.9;
+}
+@keyframes snow{to{transform:translateY(110vh);}}
+
+/* Hearts */
+.heart{
+  position:fixed;
+  bottom:-20px;
+  animation:hearts linear infinite;
+}
+@keyframes hearts{to{transform:translateY(-120vh);}}
+
+/* First slide */
+.first{
+  background:linear-gradient(#ffffff,#e6f2ff);
+}
+.santa{
+  position:absolute;
+  bottom:120px;
+  font-size:80px;
+  animation:santaMove 10s linear infinite;
+}
+@keyframes santaMove{
+  from{left:-100px;}
+  to{left:110%;}
+}
+.trees{
+  position:absolute;
+  bottom:0;
+  font-size:60px;
+}
+
+/* Phone card */
+.phone{
+  width:260px;
+  height:480px;
+  border-radius:30px;
+  background:white;
+  box-shadow:0 0 30px rgba(0,0,0,0.3);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+}
+.phone h1{color:#b21f1f;}
+
+/* Gift */
+.gift{
+  width:140px;
+  height:140px;
+  background:#ff4d6d;
+  border-radius:12px;
+  position:relative;
+  cursor:pointer;
+}
+.gift::before,.gift::after{
+  content:"";
+  position:absolute;
+  background:white;
+}
+.gift::before{width:20px;height:140px;left:60px;}
+.gift::after{width:140px;height:20px;top:60px;}
+.open{animation:openGift 1s forwards;}
+@keyframes openGift{to{transform:scale(0);opacity:0;}}
+
+/* Letter */
+.letter{
+  background:white;
+  padding:30px;
+  border-radius:18px;
+  width:85%;
+  max-width:520px;
+  box-shadow:0 0 25px rgba(255,0,0,0.3);
+  animation:fadeUp 1.5s;
+}
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(40px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* HER PHOTO */
+.anu-pic{
+  width:170px;
+  height:170px;
+  border-radius:50%;
+  object-fit:cover;
+  margin:15px 0;
+  border:4px solid white;
+  box-shadow:0 0 25px rgba(255,77,109,0.6);
+}
+
+/* Choose one */
+.cards{display:flex;gap:20px;}
+.card{
+  width:110px;
+  height:150px;
+  perspective:1000px;
+  cursor:pointer;
+}
+.inner{
+  width:100%;
+  height:100%;
+  transition:0.8s;
+  transform-style:preserve-3d;
+}
+.card.flip .inner{transform:rotateY(180deg);}
+.front,.back{
+  position:absolute;
+  width:100%;
+  height:100%;
+  backface-visibility:hidden;
+  border-radius:15px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:30px;
+}
+.front{background:#fff0f3;}
+.back{
+  background:white;
+  transform:rotateY(180deg);
+  font-size:22px;
+  color:#b21f1f;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎶 Background Music (mobile-safe) -->
+<audio id="bgMusic" loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Slide 1 -->
+<div class="slide active first" id="s1">
+  <div class="santa">🎅</div>
+  <div class="trees">🎄 🎄 🎄</div>
+  <div class="phone">
+    <h1>🎁 Gift for You</h1>
+    <p>Tap to open ❤️</p>
+    <button onclick="go(2)">Open</button>
+  </div>
+</div>
+
+<!-- Slide 2 -->
+<div class="slide" id="s2">
+  <h1>Tap the gift 💝</h1>
+  <div class="gift" onclick="openGift()"></div>
+</div>
+
+<!-- Slide 3 -->
+<div class="slide" id="s3">
+  <div class="letter">
+    <h2>Dear Anu ❤️</h2>
+
+    <!-- HER PHOTO -->
+    <img src="anu.jpg" class="anu-pic" alt="Anu">
+
+    <p>
+      This Christmas, I just want you to know how much you mean to me.
+      You bring warmth, happiness, and love into my life.
+    </p>
+    <p>
+      Every moment with you feels magical, and I am grateful for you
+      every single day.
+    </p>
+  </div>
+  <button onclick="go(4)">Next</button>
+</div>
+
+<!-- Slide 4 -->
+<div class="slide" id="s4">
+  <h1>🎁 Gift for me</h1>
+  <button onclick="go(5)">Open</button>
+</div>
+
+<!-- Slide 5 -->
+<div class="slide" id="s5">
+  <h2>Choose one 💌</h2>
+  <div class="cards">
+    <div class="card" onclick="flip(this)">
+      <div class="inner">
+        <div class="front">🎁</div>
+        <div class="back">💖</div>
+      </div>
+    </div>
+    <div class="card" onclick="flip(this)">
+      <div class="inner">
+        <div class="front">🎁</div>
+        <div class="back">💖</div>
+      </div>
+    </div>
+    <div class="card" onclick="flip(this)">
+      <div class="inner">
+        <div class="front">🎁</div>
+        <div class="back">💖</div>
+      </div>
+    </div>
+  </div>
+  <button onclick="go(6)">Continue</button>
+</div>
+
+<div class="slide" id="s6"><h1>You</h1><button onclick="go(7)">Next</button></div>
+<div class="slide" id="s7"><h1>Are</h1><button onclick="go(8)">Next</button></div>
+<div class="slide" id="s8"><h1>The Gift For Me ❤️</h1></div>
+
+<script>
+function go(n){
+  document.querySelector('.active').classList.remove('active');
+  document.getElementById('s'+n).classList.add('active');
+}
+
+function openGift(){
+  document.querySelector('.gift').classList.add('open');
+  setTimeout(()=>go(3),1000);
+}
+
+function flip(el){el.classList.toggle('flip');}
+
+/* Start music on first tap (required for phones) */
+let started=false;
+document.body.addEventListener("click",()=>{
+  if(!started){
+    const m=document.getElementById("bgMusic");
+    m.volume=0.25;
+    m.play();
+    started=true;
+  }
+});
+
+/* Snow */
+for(let i=0;i<45;i++){
+  let s=document.createElement("div");
+  s.className="snow";
+  s.innerHTML="❄️";
+  s.style.left=Math.random()*100+"vw";
+  s.style.animationDuration=3+Math.random()*5+"s";
+  s.style.fontSize=10+Math.random()*18+"px";
+  document.body.appendChild(s);
+}
+
+/* Hearts */
+for(let i=0;i<25;i++){
+  let h=document.createElement("div");
+  h.className="heart";
+  h.innerHTML="❤️";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=5+Math.random()*6+"s";
+  h.style.fontSize=12+Math.random()*22+"px";
+  document.body.appendChild(h);
+}
+</script>
+
+</body>
+</html>
